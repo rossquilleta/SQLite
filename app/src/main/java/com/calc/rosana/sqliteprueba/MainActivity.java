@@ -1,5 +1,6 @@
 package com.calc.rosana.sqliteprueba;
 
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     EditText cod, desc, prix;
 
+    //int codg;
+  //  String descr;
+   // Float price;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         cod = (EditText) findViewById(R.id.codigo);
         desc = (EditText) findViewById(R.id.descipcion);
         prix = (EditText) findViewById(R.id.precio);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -45,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
     public void alta(View view) {
         AdminSQLiteHelper admin = new AdminSQLiteHelper(this, "administracion", null, 1);
         SQLiteDatabase bd = admin.getWritableDatabase();     //objeto bd
-        String codg = cod.getText().toString();
+
+        int   codg = Integer.parseInt(cod.getText().toString());
         String descr = desc.getText().toString();
-        String price = prix.getText().toString();
+        Float price =  Float.parseFloat(prix.getText().toString());
 
         ContentValues registro = new ContentValues();  //objeto para insertar datos
 
@@ -67,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void consultaCdg(View view) {
         AdminSQLiteHelper admin = new AdminSQLiteHelper(this, "administracion", null, 1);
-        SQLiteDatabase bdd = admin.getWritableDatabase();
-        String codg = cod.getText().toString();
-        Cursor fila = bdd.rawQuery("select descripcion, precio from articulos where codigo=" + cod, null);
+        SQLiteDatabase bdd = admin.getReadableDatabase();
+        int   codg = Integer.parseInt(cod.getText().toString());
+       // String query = "SELECT descripcion, precio FROM articulos WHERE codigo=";
+        Cursor fila = bdd.rawQuery("SELECT descripcion, precio FROM articulos WHERE codigo="+codg, null);
 
         if (fila.moveToFirst()) {
-            desc.setText(fila.getString(0));
-            prix.setText(fila.getString(1));
+            cod.setText(fila.getString(0));
+            desc.setText(fila.getString(1));
+            prix.setText(fila.getString(2));
         } else
             Toast.makeText(this, "No hay datos", Toast.LENGTH_SHORT).show();
         fila.close();

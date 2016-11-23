@@ -11,11 +11,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AdminSQLiteHelper extends SQLiteOpenHelper {
 
-    public String sentence = "CREATE TABLE articulos(codigo INTEGER PRIMARY KEY, descripcion TEXT, precio REAL)";
+    public String create = "CREATE TABLE articulos(codigo INTEGER PRIMARY KEY, descripcion TEXT, precio REAL)";
 
 
     public AdminSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, null, 1);
+        super(context, "articulos", null, 1);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class AdminSQLiteHelper extends SQLiteOpenHelper {
         if (db.isReadOnly()) {
             db = getWritableDatabase();
         }
-        db.execSQL(sentence);
+        db.execSQL(create);
 
     }
 
@@ -31,7 +31,7 @@ public class AdminSQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
             db.execSQL("DROP TABLE IF EXISTS articulos");
-            db.execSQL(sentence);
+            db.execSQL(create);
         }
     }
 }
